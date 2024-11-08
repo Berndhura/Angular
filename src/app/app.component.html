@@ -1,9 +1,21 @@
-<h1>
-  Liste der Bücher:
-</h1>
-<ul>
-  <li *ngFor="let book of books">
-      <p>Beschreibung : {{book.package.description}}</p>
-      <p>Datum : {{book.package.date}}</p>
-  </li>
-</ul>
+<div>
+  <button (click)="getData()">Fetch data</button>
+</div>
+
+<ng-container *ngIf="responseAvailable">
+  <h3>Response Data</h3>
+  <table class="table">
+    <thead >
+      <tr>
+        <th>Name</th>
+        <th>email</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="(response$ | async) as daten">
+      <tr *ngFor="let user of daten">
+        <td>{{user.name}}</td>
+        <td>{{user.email}}</td>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>

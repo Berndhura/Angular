@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Conditional } from '@angular/compiler';
+import { Observable } from 'rxjs/internal/Observable';
 
 
 @Component({
@@ -8,20 +8,22 @@ import { Conditional } from '@angular/compiler';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   
-  results: any={};
-  books: any=[];
-
   constructor(private http: HttpClient) {}
 
-  ngOnInit() {      
-    // Simple GET request with response type <any>
-    this.http.get<any>('https://api.npms.io/v2/search?q=scope:angular').subscribe(data => {
-        console.log(data)
-        this.results = data['results']
-        this.books = Object.values(this.results);
-    })
+  response$: Observable<any> | undefined;
+  responseAvailable: boolean = false;
+
+  getData() {
+    this.response$ = this.http.get('https://jsonplaceholder.typicode.com/users')
+    this.responseAvailable = true;
+  }
+
+  title = 'my-app';
 }
-  title = 'GithubList';
+
+interface SearchResults {
+  author: string;
+  description: string;
 }
